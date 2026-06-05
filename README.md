@@ -1,28 +1,42 @@
-# Sistema de Cadastro e Validação
+# Sistema de Validação e Persistência de Clientes
 
+Este é um projeto backend focado em garantir a integridade na entrada de dados de clientes e realizar a persistência segura em um banco de dados relacional. A aplicação atua como um pipeline de cadastro, validando regras de negócio e barrando dados inválidos ou duplicados antes da inserção.
 
-Este projeto é uma aplicação de cadastro de clientes desenvolvida para integrar lógica de validação no backend com regras de integridade diretamente no banco de dados. O objetivo principal foi criar um fluxo de entrada de dados seguro, resiliente e focado na experiência do usuário.
+## Funcionalidades
 
+O sistema verifica a tipagem e o tamanho exato dos caracteres inseridos utilizando métodos nativos do Python, mantendo um controle de fluxo contínuo para que a aplicação rode de forma interativa durante o uso.
 
-## 🛠️ Arquitetura e Tecnologias
+A gravação das informações ocorre de forma segura através da integração direta com o PostgreSQL, utilizando a biblioteca psycopg2. A modelagem da tabela no banco de dados assegura a integridade relacional com chaves incrementais automáticas (SERIAL) e restrições de duplicidade (UNIQUE).
 
+Em caso de falhas durante a execução, o código captura as exceções e realiza o rollback das transações, protegendo a estabilidade do sistema contra interrupções abruptas.
 
-Para a construção do sistema, utilizei:
+## Tecnologias e Ambiente
 
-* **Python:** Criação da interface de linha de comando e validações iniciais de formato.
+O projeto foi construído utilizando Python 3 como linguagem principal. A persistência dos dados foi feita em PostgreSQL com o driver de conexão psycopg2. Todo o desenvolvimento e validação ocorreram em ambiente Linux, utilizando o PyCharm e o DBeaver.
 
-* **PostgreSQL:** Banco de dados relacional para persistência segura das informações.
+## Como Executar
 
-* **DBeaver:** Ferramenta de gerenciamento visual do banco.
+1. Clone o repositório para a sua máquina:
+```bash
+    git clone [https://github.com/Dav-stack1/sistema-cadastro-cpf.git](https://github.com/Dav-stack1/sistema-cadastro-cpf.git)
+    ```
 
-* **psycopg2:** Biblioteca utilizada para a comunicação nativa entre a aplicação Python e o banco de dados.
+2. Execute o script de banco de dados no seu gerenciador (como o DBeaver) para criar a estrutura da tabela.
 
+3. Altere as variáveis de conexão (host, database, user, password) no arquivo validador.py com as suas credenciais locais.
 
-## ⚙️ Funcionalidades Principais
+4. Execute a aplicação no terminal:
+```bash
+    python validador.py
+    ```
 
+## Estrutura do Projeto
 
-* **Validação de Formato:** O sistema possui um laço de repetição contínuo que orienta o usuário durante o preenchimento. Ele confere se a entrada possui os 11 dígitos numéricos necessários para um CPF válido, impedindo a inserção de strings ou caracteres soltos.
+**validador.py:** Motor principal contendo a lógica de negócio, validação e tratamento de exceções.
+**teste_conexao.py:** Arquivo de teste de infraestrutura para validar o tráfego com o banco.
+**banco_de_dados.sql:** Script DDL contendo a estrutura de criação da tabela.
 
-* **Integridade de Dados (Unique):** No lado do banco de dados, a tabela foi configurada com a restrição `UNIQUE` na coluna de CPF para impedir cadastros duplicados.
+---
+Projeto construído como iniciativa pessoal para aprofundamento prático em arquitetura de dados e integração entre backend e banco de dados.
 
-* **Resiliência e Tratamento de Exceções:** Para evitar crashes, foi implementado um tratamento de exceções (`try/except`) no Python. Caso um usuário tente cadastrar um documento já existente, o sistema captura a falha silenciosamente, realiza o `rollback` da transação e notifica o usuário amigavelmente para tentar novamente.
+Autor: Davi Veloso (Dav-stack1)
